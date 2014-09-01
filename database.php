@@ -23,11 +23,11 @@ $sample_args = array('post_type' => 'samples',
               'taxonomies'          => array('type' 
                                         => array('featured_image' =>'image'))
               );              
-$sample = new SimpulSections($sample_args);
+$sample = new SimpulDatabase($sample_args);
  
-class SimpulSections {
+class SimpulDatabase {
      /**
-     * SimpulSections by Alexander Conroy
+     * SimpulDatabase by Alexander Conroy
      * Copyright 2013 Esotech Inc.
      * MIT License
      * http://opensource.org/licenses/MIT
