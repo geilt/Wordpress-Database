@@ -44,12 +44,41 @@ Version 2.0
 
   ##Field Types
 
-  SimpulSections offers some preconfigured meta boxes for inputting data into posts and taxonomies. The following field types are valid, all others will be considered text.
+  SimpulSections offers some preconfigured meta boxes for inputting data into posts and taxonomy terms (post_meta and tax_meta). The following field types are valid, all others will be considered text. Meta fields work the same in Terms as well as Posts themselves.
 
-  *text*, *image*, *file*, *textarea*, *checkbox*, *date*, *datetime*, *select*
+* *text*
+  * Normal text field.
+* *image*
+  * Text field with Upload button for Media Uploader that will autofill a relative link. Shows preview image once set.
+* *file*
+  * Text field with Upload button for Media Uploader that will autofill a relative link.
+* *textarea*
+  * Normal textarea
+* *editor*
+  * wp_editor Textarea
+* *checkbox*
+  * Checkbox with label.
+* *date*
+  * Normal text field with Date Popup window.
+* *datetime*
+  * Normal text field with DateTime Popup window.
+* *map*
+  * Normal text field. Paste a Google Map Link. Will show a preview once set.
+  * Not implemented yet.
+* *taxonomy*
+  * Select menu with terms from a specific taxonomy.
+* *select*
+  * Normal text field.
 
 *File and Image sections use a custom form of the Wordpress Uploaded provided and autoloaded into the Wordpress Admin backend when dealing with the registered post type.*
 
 ##Helper functions
 
-* 
+* *the_term_meta(term, taxonomy, key, filter)*
+  * term (int|string)
+  * taxonomy (string)
+  * key (string)
+  * filter (false|function hook)
+    * default: false
+* *get_term_meta(term, taxonomy, key, filter)*
+  * See the_term_meta. echo's result by default.

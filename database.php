@@ -24,7 +24,7 @@ $sample_args = array('post_type' => 'samples',
                                         => array('featured_image' =>'image'))
               );              
 $sample = new SimpulDatabase($sample_args);
- 
+  
 class SimpulDatabase {
      /**
      * SimpulDatabase by Alexander Conroy
@@ -35,6 +35,7 @@ class SimpulDatabase {
      * Version 2.0
      * @package Simpul
      */
+    
     public function __construct( $args ) {
         $this->post_type             = $args['post_type']; //Set the Post Type (Singular)
         $this->post_type_plural      = $args['post_type_plural']; //Set the Post Type (Plural)
@@ -72,9 +73,7 @@ class SimpulDatabase {
             self::createPostType();
         endif;
     }
-    ///////////////////////////
-    ///////TYPE AND TAX////////
-    ///////////////////////////
+    //TYPE AND TAX
     public function createPostType() {
         //Programs  
         $args = array(
@@ -257,13 +256,8 @@ class SimpulDatabase {
             update_option( "taxonomy_" . $term_id, $term_meta );
         endif;
     }
-    ///////////////////////////
-    /////END TYPE AND TAX//////
-    ///////////////////////////
- 
-    ///////////////////////////
-    /////////POST META/////////
-    ///////////////////////////
+
+    //POST META
     //Set Meta Field Variables for use in the Script
     public function loadMetaScripts(){
         global $post;
@@ -453,13 +447,9 @@ class SimpulDatabase {
     
         return $vars;
     }
-    /////////////////////////// 
-    ///////END POST META///////
-    ///////////////////////////
- 
-    ///////////////////////////
-    //////HELPER FUNCTIONS/////
-    ///////////////////////////
+
+    // HELPER FUNCTIONS
+  
     //$post_id doubles for term_id if passed
     public function formatFields($post, $field_name, $label, $format, $term = false )
     {  
@@ -680,13 +670,9 @@ class SimpulDatabase {
         <?php
         endif;
     }
-    ///////////////////////////
-    ///END REGISTER SCRIPTS////
-    ///////////////////////////
+
 }
-///////////////////////////
-////TEMPLATE FUNCTIONS/////
-///////////////////////////
+
 if(!function_exists('get_term_meta')):
     function get_term_meta($term, $taxonomy, $key, $filter = false ){
         if(!$taxonomy && !$term):
