@@ -4,11 +4,11 @@
 
 Creates a Wordpress Post Types with some extra features for Meta Data and Column Sorting. Include it from functions.php. This plugin is meant to be hard coded into your template, there is no admin panel. 
 
-SimpulSections by Alexander Conroy
-Copyright 2014 @geilt - Alexander Conroy
+SimpulSections by Alexander Conroy  
+Copyright 2014 [@geilt](http://twitter.com/geilt) - [Alexander Conroy](http://gei.lt)  
 MIT License  
-http://opensource.org/licenses/MIT
-Version 2.0
+http://opensource.org/licenses/MIT  
+Version 2.0  
 
 ##Configuration
 
@@ -42,9 +42,9 @@ Version 2.0
   * Any taxonomy that becomes a key with an array will have custom taxonomy meta set. ex: 'mytax' => array(fieldname => fieldtype). Valid Types: text, image, file, textarea, checkbox, date, datetime, select
   * uses simpul.meta.upload.js but it is now included in a function now and no longer required to include the .js file.
 
-  ##Field Types
+##Field Types
 
-  SimpulSections offers some preconfigured meta boxes for inputting data into posts and taxonomy terms (post_meta and tax_meta). The following field types are valid, all others will be considered text. Meta fields work the same in Terms as well as Posts themselves.
+SimpulSections offers some preconfigured meta boxes for inputting data into posts and taxonomy terms (post_meta and tax_meta). The following field types are valid, all others will be considered text. Meta fields work the same in Terms as well as Posts themselves.
 
 * *text*
   * Normal text field.
@@ -70,7 +70,7 @@ Version 2.0
 * *select*
   * Normal text field.
 
-*File and Image sections use a custom form of the Wordpress Uploaded provided and autoloaded into the Wordpress Admin backend when dealing with the registered post type.*
+*File and Image sections use a custom form of the Wordpress Media Box Uploader which we provided and autoloaded into the Wordpress Admin backend when dealing with the registered post type.* This is all done inline, there is no separate .js file loaded.
 
 ##Helper functions
 
