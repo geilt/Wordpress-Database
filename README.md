@@ -6,7 +6,7 @@ Creates Wordpress post types and associated taxonomies with some extra features 
 Save it as database.php in your theme folder and include it in functions.php using include_once('database.php').  
 This plugin is meant to be hard coded into your template, there is no admin panel. 
 
-Copyright &copy; 2014 [@geilt](http://twitter.com/geilt) - [Alexander Conroy](http://gei.lt)
+Copyright &copy; 2014 [@geilt](http://twitter.com/geilt) - [Alexander Conroy](http://gei.lt)  
 MIT License http://opensource.org/licenses/MIT  
 Version 2.0  
 
