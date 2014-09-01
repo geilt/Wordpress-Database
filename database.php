@@ -28,68 +28,32 @@ $sample = new SimpulDatabase($sample_args);
 class SimpulDatabase {
      /**
      * SimpulDatabase by Alexander Conroy
-     * Copyright 2013 Esotech Inc.
+     * Copyright 2014 @geilt - Alexander Conroy
      * MIT License
      * http://opensource.org/licenses/MIT
-     * Version 1.9.14
+     * https://github.com/geilt/Wordpress-Database
+     * Version 2.0
      * @package Simpul
-     * @param $args array all values get dropped into the constructor
-     * @param string $this->post_type Name of Post Type
-     * @param string $this->post_type_singular Singular version of post type
-     * @param string $this->post_type_slug Allows you to choose a custom slug including the use of wordpress params such as %author% ex: mypostype/%author%
-     * @uses method filterPostTypeSlugAuthor when %author% to allow you to nest content based on author
-     * @param mixed $this->custom_capabilities When set to true, creates a new capability based off of the post type. If string will set the post type to use the permissions selected for any permission set.
-     * @param array $this->fields An array of custom meta fields and their types. fieldname => fieldtype. Valid Types: text, image, file, textarea, checkbox, date, datetime, select
-     * @param array $this->fields_values Values used for multi value fields such as select menus. value => label
-     * @param array $this->fields_private. Separate custom meta section for data not meant for front end. Purely organizational. fieldname => fieldtype
-     * @param string heirarchical makes post type heirarchcal (parents)
-     * @param array $this->fields_list Fields that will in Post Type List. Taxonomies automatically show. fieldname => fieldtype
-     * @param string $this->fields_location Where the custom post meta box gets located.'normal', 'advanced', or 'side'
-     * @param string $this->fields_priority What order the custom post meta box shows by default 'high', 'core', 'default' or 'low'
-     * @param array $this->taxonomies Any taxonomy that becomes a key with an array will have custom taxonomy meta set. ex: 'mytax' => array(fieldname => fieldtype). Valid Types: text, image, file, textarea, checkbox, date, datetime, select
-     * @uses simpul.meta.upload.js but it is now included in a function now and no longer required to include the .js file.
-     * 
      */
     public function __construct( $args ) {
-        //Set the Post Type (Plural)
-        $this->post_type             = $args['post_type'];
-        
-        //Set the Post Type (Singular)
-        $this->post_type_singular    = $args['post_type_singular'];
-        
+        $this->post_type             = $args['post_type']; //Set the Post Type (Singular)
+        $this->post_type_plural      = $args['post_type_plural']; //Set the Post Type (Plural)
         $this->post_type_slug        = $args['post_type_slug'];
-        
         $this->heirarchical          = !empty($args['heirarchical']) ? true : false;
+        $this->custom_capabilities   = $args['custom_capabilities'];
+        $this->public                = isset($args['public']) ? $args['public'] : true;       
         
-        $this->custom_capabilities   = $args['custom_capabilities'];;
- 
-        $this->public 				 = isset($args['public']) ? $args['public'] : true;
-        
-        /* FIELDS */
-        //Set any Meta Fields for the Post Type
-        $this->fields                = $args['fields'];
-        
-        //Set any Meta Fields for the Post Type that will be Private
-        $this->fields_private        = $args['fields_private'];
-        
-        //Set any meta fields you want to show in the list. If it's the same as your fields, then just set the varaible to fields/
-        
-        $this->fields_list           = $args['fields_list'];
- 
-        //Used to store key value pair options for select menus and any other multi option menus
-        $this->fields_values          = $args['fields_values'];
-        
-        $this->fields_location = !empty($args['fields_location']) ? $args['fields_location'] : 'side';
-        
-        $this->fields_priority = !empty($args['fields_priority']) ? $args['fields_priority'] : 'high'; 
-        /* ENDFIELDS */
+        $this->fields                = $args['fields']; //Set any Meta Fields for the Post Type
+        $this->fields_private        = $args['fields_private'];  //Set any Meta Fields for the Post Type that will be Private
+        $this->fields_list           = $args['fields_list'];//Set any meta fields you want to show in the list. If it's the same as your fields, then just set the variable to fields/
+        $this->fields_values         = $args['fields_values'];  //Used to store key value pair options for select menus and any other multi option menus
+        $this->fields_location       = !empty($args['fields_location']) ? $args['fields_location'] : 'side'; 
+        $this->fields_priority       = !empty($args['fields_priority']) ? $args['fields_priority'] : 'high'; 
  
         $this->taxonomies            = $args['taxonomies'];
+
+        $this->invalid_tax_types     = array('category', 'tag'); // Default for Wordpress. We do not allow these. Other plugins may conflict.
         
-        $this->taxonomy_fields       = $args['taxonomy_fields'];
-        
-        $this->invalid_tax_types = array('category', 'tag');
- 
         $this->text_domain = 'simpul';
         
         add_action( 'init', array($this, 'run') );
@@ -115,19 +79,19 @@ class SimpulDatabase {
         //Programs  
         $args = array(
                     'labels' => array(
-                        'name' => __( self::getLabel($this->post_type) ),
-                        'singular_name' => _x(self::getLabel($this->post_type_singular), 'post type singular name'),
+                        'name' => __( self::getLabel($this->post_type_plural) ),
+                        'singular_name' => _x(self::getLabel($this->post_type), 'post type singular name'),
                         'add_new' => _x('Add New', self::getLabel( $this->post_type ) ),
-                        'add_new_item' => __('Add New ' . self::getLabel( $this->post_type_singular ) ),
-                        'edit_item' => __('Edit ' . self::getLabel($this->post_type_singular) ),
-                        'new_item' => __('New ' . self::getLabel($this->post_type_singular)),
-                        'all_items' => __('All ' . self::getLabel($this->post_type)),
-                        'view_item' => __('View ' . self::getLabel($this->post_type_singular)),
-                        'search_items' => __('Search ' . self::getLabel($this->post_type)),
-                        'not_found' =>  __('No ' . $this->post_type .' found'),
-                        'not_found_in_trash' => __('No ' . $this->post_type .' found in Trash'), 
+                        'add_new_item' => __('Add New ' . self::getLabel( $this->post_type ) ),
+                        'edit_item' => __('Edit ' . self::getLabel($this->post_type) ),
+                        'new_item' => __('New ' . self::getLabel($this->post_type)),
+                        'all_items' => __('All ' . self::getLabel($this->post_type_plural)),
+                        'view_item' => __('View ' . self::getLabel($this->post_type)),
+                        'search_items' => __('Search ' . self::getLabel($this->post_type_plural)),
+                        'not_found' =>  __('No ' . $this->post_type_plural .' found'),
+                        'not_found_in_trash' => __('No ' . $this->post_type_plural .' found in Trash'), 
                         'parent_item_colon' => '',
-                        'menu_name' => self::getLabel( $this->post_type )
+                        'menu_name' => self::getLabel( $this->post_type_plural )
                     ),
         'hierarchical' => $this->heirarchical,
         'public' => $this->public,
@@ -167,7 +131,7 @@ class SimpulDatabase {
         if(!empty($this->post_type_slug)):
             $args['rewrite'] = array('slug' => $this->post_type_slug );
         endif;
-        //echo '<pre>'; print_r($args); echo '</pre>';
+
         register_post_type( $this->post_type,
             $args
         );
@@ -499,6 +463,11 @@ class SimpulDatabase {
     //$post_id doubles for term_id if passed
     public function formatFields($post, $field_name, $label, $format, $term = false )
     {  
+        if(is_array($format)):
+            $type = array_keys($format)[0];
+        else:
+            $type = $format;
+        endif;
       $id_selector = preg_replace('/[^\w\d_]/', '_', $field_name);
       if($term):
           if($format != 'textarea'):
@@ -513,7 +482,7 @@ class SimpulDatabase {
           echo "<tr>";
           $value = get_post_meta($post->ID, $field_name ,true);
       endif;
-      switch($format):
+      switch($type):
          case "datetime":
             echo '<th><label for="' . $id_selector . '">';
              _e($label, $this->text_domain );
@@ -604,12 +573,27 @@ class SimpulDatabase {
             _e($label, $this->text_domain);
             echo '</strong></th>';
             break;
+        case "taxonomy":
+            $taxonomy = array_values($format)[0];
+            $terms = get_terms($taxonomy, array('hide_empty' => false));
+            echo '<th><label for="' . $id_selector . '">';
+            _e($label, $this->text_domain );
+            echo '</label><br>';    
+            echo '<td><select id="' . $id_selector . '" name="' . $field_name . '" style="width: 100%;">';
+            foreach($terms as $term):
+                if($term->slug == $value):
+                    echo '<option value="' . $term->slug . '" selected="selected">' . $term->name . '</option>';
+                else:
+                    echo '<option value="' . $term->slug . '">' . $term->name . '</option>';
+                endif;
+            endforeach;
+            echo '</select></td>';
+            break; 
         default:
             echo '<th><label for="' . $id_selector . '">';
              _e($label, $this->text_domain );
             echo '</label></th>';
-            echo '<td><input type="text" id="' . $id_selector . '" name="' . $field_name . '" value="' . $value . '" /></td>';
-          
+            echo '<td><input type="text" id="' . $id_selector . '" name="' . $field_name . '" value="' . $value . '" style="width: 100%" /></td>';
             break;
       endswitch;
       echo "</tr>";
