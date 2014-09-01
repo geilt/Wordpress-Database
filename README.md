@@ -74,11 +74,11 @@ SimpulSections offers some preconfigured meta boxes for inputting data into post
 
 ##Helper functions
 
-* *the_term_meta(term, taxonomy, key, filter)*
+* **the_term_meta** (term, taxonomy, key, filter)
   * term (int|string)
   * taxonomy (string)
   * key (string)
   * filter (false|function hook)
     * default: false
-* *get_term_meta(term, taxonomy, key, filter)*
+* **get_term_meta** (term, taxonomy, key, filter)
   * See the_term_meta. echo's result by default.
