@@ -2,12 +2,12 @@
 
 ##SimpulSections
 
-Creates a Wordpress Post Types with some extra features for Meta Data and Column Sorting. Include it from functions.php. This plugin is meant to be hard coded into your template, there is no admin panel. 
+Creates Wordpress post types and associated taxonomies with some extra features for both post and taxonomy meta data, including post type list column sorting.  
+Save it as database.php in your theme folder and include it in functions.php using include_once('database.php').  
+This plugin is meant to be hard coded into your template, there is no admin panel. 
 
-SimpulSections by Alexander Conroy  
-Copyright 2014 [@geilt](http://twitter.com/geilt) - [Alexander Conroy](http://gei.lt)  
-MIT License  
-http://opensource.org/licenses/MIT  
+Copyright &copy; 2014 [@geilt](http://twitter.com/geilt) - [Alexander Conroy](http://gei.lt)
+MIT License http://opensource.org/licenses/MIT  
 Version 2.0  
 
 ##Configuration
@@ -46,28 +46,28 @@ Version 2.0
 
 SimpulSections offers some preconfigured meta boxes for inputting data into posts and taxonomy terms (post_meta and tax_meta). The following field types are valid, all others will be considered text. Meta fields work the same in Terms as well as Posts themselves.
 
-* *text*
+* **text**
   * Normal text field.
-* *image*
+* **image**
   * Text field with Upload button for Media Uploader that will autofill a relative link. Shows preview image once set.
-* *file*
+* **file**
   * Text field with Upload button for Media Uploader that will autofill a relative link.
-* *textarea*
+* **textarea**
   * Normal textarea
-* *editor*
+* **editor**
   * wp_editor Textarea
-* *checkbox*
+* **checkbox**
   * Checkbox with label.
-* *date*
+* **date**
   * Normal text field with Date Popup window.
-* *datetime*
+* **datetime**
   * Normal text field with DateTime Popup window.
-* *map*
+* **map**
   * Normal text field. Paste a Google Map Link. Will show a preview once set.
   * Not implemented yet.
-* *taxonomy*
+* **taxonomy**
   * Select menu with terms from a specific taxonomy.
-* *select*
+* **select**
   * Normal text field.
 
 *File and Image sections use a custom form of the Wordpress Media Box Uploader which we provided and autoloaded into the Wordpress Admin backend when dealing with the registered post type.* This is all done inline, there is no separate .js file loaded.
